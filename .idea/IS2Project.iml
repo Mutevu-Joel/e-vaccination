@@ -11,5 +11,12 @@
     <orderEntry type="library" name="jquery-3.3.1.slim" level="application" />
     <orderEntry type="library" name="popper.js" level="application" />
     <orderEntry type="library" name="jquery-3.5.1.slim" level="application" />
+    <orderEntry type="library" name="bootstrap-datetimepicker" level="application" />
+    <orderEntry type="library" name="jquery" level="application" />
+    <orderEntry type="library" name="moment.js" level="application" />
+    <orderEntry type="library" name="bootstrap-datepicker" level="application" />
+    <orderEntry type="library" name="bootstrap-combined.no-icons" level="application" />
+    <orderEntry type="library" name="jquery-ui" level="application" />
+    <orderEntry type="library" name="jquery-1.12.4" level="application" />
   </component>
 </module>

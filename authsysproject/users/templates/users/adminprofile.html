@@ -24,9 +24,8 @@
   </style>
   </head>
   <body>
-      <nav class="navbar navbar-expand-lg navbar-info bg-info">
-        <div class = "container">
-  <a class="navbar-brand text-white" href="{% url 'base' %}">Kibwezi Sub-County Hospital</a>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="{% url 'base' %}">Navbar</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -34,29 +33,29 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link text-white" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link text-white" href="{% url 'childRegistration' %}">Register</a>
+        <a class="nav-link" href="#">Link</a>
       </li>
-    </ul>
-
-    <ul class="navbar-nav ml-auto">
-      <li class="nav-item active">
-        <a class="nav-link text-white" href="{% url 'adminprofile' %}">Admin Profile <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link text-white" href="{% url 'logout' %}">Logout</a>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Dropdown
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="{% url 'childRegistration' %}">Register</a>
+          <a class="dropdown-item" href="#">Add staff</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">Something else here</a>
+        </div>
       </li>
     </ul>
     <form class="form-inline my-2 my-lg-0">
-      <input class="form-control bg-white mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-dark my-2 my-sm-0" type="submit">Search</button>
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
     </form>
-    </div>
-          </div>
+  </div>
 </nav>
-
 
       <div class = " container">
         <div class = "row mt-4">
@@ -88,7 +87,7 @@
                       </a>
                   </div>
                   <div class = "com-md-4 p-3">
-                    <a class = "text-decoration-none text-dark" href="{% url 'vaccine' %}">
+                    <a class = "text-decoration-none text-dark" href="">
                     <div class = "card my-card shadow text-center p-3">
                       <h4>Vaccines <i class="fa-solid fa-syringe"></i> </h4>
                       <h3>101</h3>
