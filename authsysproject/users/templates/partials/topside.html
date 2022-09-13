@@ -1,10 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+ <div class = " container">
+        <div class = "row mt-4">
+          <div class = "col-md-4">
+            <div class = "card">
+              <div class = " card-header bg-info">
+                Information
+              </div>
+              <div class = "card-body">
+                <marquee behavior = "" direction="">
+                  <h3 class ="my-3">Welcome to the dashboard</h3>
+                </marquee>
+              </div>
+            </div>
+          </div>
+          <div class = "col-md-8">
+            <div class = "card">
+              <div class = " card-header bg-info text-white">
+                Statistics
+              </div>
+              <div class = "card-body">
+                <div class =" row">
+                  <div class = "com-md-4 p-3">
+                    <a class = "text-decoration-none text-dark" href="{% url 'staff' %}">
+                    <div class = "card my-card shadow text-center p-3">
+                      <h4>Staff <i class="fa-sharp fa-solid fa-users"></i> </h4>
+                      <h3>1</h3>
+                    </div>
+                      </a>
+                  </div>
+                  <div class = "com-md-4 p-3">
+                    <a class = "text-decoration-none text-dark" href="{% url 'vaccine' %}">
+                    <div class = "card my-card shadow text-center p-3">
+                      <h4>Vaccines <i class="fa-solid fa-syringe"></i> </h4>
+                      <h3>101</h3>
+                    </div>
+                      </a>
+                  </div>
+                  <div class = "com-md-4 p-3">
+                    <a class = "text-decoration-none text-dark" href="">
+                    <div class = "card my-card shadow text-center p-3">
+                      <h4>Total Vaccinated <i class="fa-solid fa-children"></i> </h4>
+                      <h3>35</h3>
+                    </div>
+                      </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
