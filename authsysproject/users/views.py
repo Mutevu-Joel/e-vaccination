@@ -18,7 +18,7 @@ def register(request):
         form = CreateUserForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('home')
+            return redirect('login')
     else:
         form = CreateUserForm()
     context = {
@@ -26,13 +26,7 @@ def register(request):
     }
     return render(request, 'users/register.html', context)
 
-
-
-
-
-
-
-
+@login_required
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def home(request):
     return render(request, 'users/home.html')
@@ -48,20 +42,26 @@ def logout_request(request):
     messages.success(request, "You have successfully logged out.")
     return redirect("login")
 
+@login_required
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def base(request):
     return render(request, 'users/base.html')
 
+@login_required
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def staff(request):
     return render(request, 'users/staff.html')
 
+@login_required
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def childRegistration(request):
     return render(request, 'users/childRegistration.html')
 
+@login_required
 def adminprofile(request):
     return render(request, 'users/adminprofile.html')
+
+@login_required
 def vaccine(request):
     return render(request, 'users/vaccine.html')
 

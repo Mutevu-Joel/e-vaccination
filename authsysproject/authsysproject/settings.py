@@ -38,7 +38,6 @@ INSTALLED_APPS = [
 
     # own
     'users.apps.UsersConfig',
-    'login.apps.LoginConfig',
     'crispy_forms',
 
 ]
