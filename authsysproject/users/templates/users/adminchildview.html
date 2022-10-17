@@ -1,0 +1,69 @@
+{% extends 'partials/base.html' %}
+{% block title %}Children Page{% endblock %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+{% if user.is_authenticated and user.is_staff and user.is_superuser %}
+{% include 'partials/topside.html' %}
+    <!--Table-->
+    <div class="col-md-8">
+        <table class="table bg-white">
+            <thead class="bg-info">
+                <tr class="text-white">
+                    <th scope="col">#</th>
+                    <th scope="col">child_registration_no</th>
+                    <th scope="col">Surname</th>
+                    <th scope="col">Other_name</th>
+                    <th scope="col">weight</th>
+                    <th scope="col">sex</th>
+                    <th scope="col">height</th>
+                    <th scope="col">DOB</th>
+                    <th scope="col">Parent Id</th>
+                    <th scope="col">Phone No</th>
+                    <th scope="col">ward</th>
+                    <th scope="col">Underlying condition</th>
+                    <th scope="col">vaccine id</th>
+                    <th scope="col">vaccine type</th>
+                    <th scope="col">immunized at</th>
+                    <th scope="col">immunization description</th>
+                    
+                    
+                </tr>
+            </thead>
+            <tbody>
+            {% for item in items %}
+                <tr>
+                    <th scope="row"></th>
+                    <td>{{ item.child_registration_no }}</td>
+                     <td>{{ item.Surname }}</td>
+                    <td>{{ item.Other_name }}</td>
+                    <td>{{ item.weight }}</td>
+                    <td>{{ item.sex }}</td>
+                    <td>{{ item.height }}</td>
+                    <td>{{ item.DOB }}</td>
+                    <td>{{ item.parent_ID }}</td>
+                    <td>{{ item.phone_no }}</td>
+                    <td>{{ item.ward }}</td>
+                    <td>{{ item.Underlying_condition }}</td>
+                    <td>{{ item.vaccine_id }}</td>
+                    <td>{{ item.vaccine_id.vaccine_type }}</td>
+                    <td>{{ item.immunized_at }}</td>
+                    <td>{{ item.immunization_description}}</td>
+                    
+                    
+                    
+                    <td>
+                        <a class="btn btn-info btn-sm" href="{% url 'childedit' item.id %}">Edit</a>
+                        <a class="btn btn-danger btn-sm" href="{% url 'childdelete' item.id %}">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+{% include 'users/childview.html' %}
+{% endif %}
+
+{% endblock %}

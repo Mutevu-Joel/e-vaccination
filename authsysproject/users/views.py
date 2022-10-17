@@ -2,9 +2,12 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.views.decorators.cache import cache_control
+from django.contrib.auth.models import models
+from django.contrib.auth.models import User
+from .forms import CreateUserForm, UserUpdateForm, ProfileUpdateForm, VaccineForm, ChildForm, ImmunizationForm
+from .models import Child,Immunization
+from django.db.models import Q
 
-from .forms import CreateUserForm, UserUpdateForm, ProfileUpdateForm, VaccineForm, ChildForm
-from .models import Child
 
 # Create your views here.
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
@@ -13,6 +16,8 @@ def register(request):
         form = CreateUserForm(request.POST)
         if form.is_valid():
             form.save()
+            username = form.cleaned_data.get('username')
+            messages.success(request, f'{username} has been added')
             return redirect('login')
     else:
         form = CreateUserForm()
@@ -50,12 +55,14 @@ def profile_update(request):
     return render(request, 'profile/profile_update.html', context)
 
 def vaccine_edit(request, pk):
-    from .models import vaccine
-    item = vaccine.objects.get(id=pk)
+    from .models import Vaccine
+    item = Vaccine.objects.get(id=pk)
     if request.method == 'POST':
         form = VaccineForm(request.POST, instance=item)
         if form.is_valid():
             form.save()
+            vaccine_type = form.cleaned_data.get('child_registration_no')
+            messages.success(request, f'{vaccine_type} has been deleted')
             return redirect('vaccine')
     else:
         form = VaccineForm(instance=item)
@@ -70,6 +77,8 @@ def childedit(request,pk):
         form = ChildForm(request.POST, instance=item)
         if form.is_valid():
             form.save()
+            vaccine_type = form.cleaned_data.get('child_registration_no')
+            messages.success(request, f'{vaccine_type} has been updated')
             return redirect('childRegistration')
     else:
         form = ChildForm(instance=item)
@@ -81,19 +90,23 @@ def childedit(request,pk):
 
 @login_required
 def vaccine1(request):
-    from .models import vaccine
-    items= vaccine.objects.all()
+    from .models import Vaccine
+    data = Immunization.objects.all()
+    items= Vaccine.objects.all()
     #items = vaccine.objects.raw('SELECT * FROM authsysproject_vaccine')
     if request.method =='POST':
         form = VaccineForm(request.POST)
         if form.is_valid():
             form.save()
+            vaccine_type = form.cleaned_data.get('vaccine_type')
+            messages.success(request, f'{vaccine_type} has been added')
             return redirect('vaccine')
     else:
         form = VaccineForm()
     context = {
         'items': items,
         'form':form,
+        'data':data,
     }
 
     return render(request, 'users/vaccine.html',context)
@@ -103,6 +116,23 @@ def vaccine1(request):
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def home(request):
     return render(request, 'users/home.html')
+
+def adminchildview(request):
+    items = Child.objects.all()
+    
+    if 'q' in request.GET:
+        q = request.GET['q']
+        # data = Data.objects.filter(last_name__icontains=q)
+        multiple_q = Q(Q(child_registration_no__icontains=q) | Q(phone_no__icontains=q))
+        data = Child.objects.filter(multiple_q)
+    else:
+        data = Child.objects.all()
+
+    context = {
+        'items': items,
+         'data': data,
+    }
+    return render(request, 'users/adminchildview.html',context)
 
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
@@ -118,18 +148,68 @@ def logout_request(request):
 @login_required
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def base(request):
-    return render(request, 'users/base.html')
+    from .models import Vaccine
+    from .models import Profile
+    from .models import Child
+    vaccine = Vaccine.objects.all()
+    vaccine_count = vaccine.count()
+    staff = User.objects.all()
+    staff_count = staff.count()
+    child = Child.objects.all()
+    child_count = child.count()
+
+    context = {
+        'vaccine':vaccine,
+        'vaccine_count': vaccine_count,
+        'staff_count': staff_count,
+        'child_count': child_count,
+
+    }
+    return render(request, 'users/base.html',context)
 
 @login_required
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def staff(request):
-    return render(request, 'users/staff.html')
+    workers = User.objects.all()
+    context ={
+        'workers':workers
+    }
+    return render(request, 'users/staff.html',context)
+
+@login_required
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+def immunization1(request,pk):
+    from .models import Immunization
+    items = Immunization.objects.get(id=pk)
+    if request.method == 'POST':
+        form = ChildForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('childview')
+    else:
+        form = ImmunizationForm()
+    context ={
+        'items':items,
+        'form':form,
+    }
+    return render(request, 'users/immunization.html',context)
+
+
+
+def staff_details(request,pk):
+    workers = User.objects.get(id=pk)
+    context ={
+        'workers':workers
+    }
+    return render(request, 'users/staff_details.html',context)
 
 @login_required
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def childRegistration(request):
     from .models import Child
     items = Child.objects.all()
+   
+
     # items = vaccine.objects.raw('SELECT * FROM authsysproject_vaccine')
     if request.method == 'POST':
         form = ChildForm(request.POST)
@@ -141,6 +221,7 @@ def childRegistration(request):
     context = {
         'items': items,
         'form': form,
+
     }
     return render(request, 'users/childRegistration.html',context)
 
@@ -148,14 +229,28 @@ def childRegistration(request):
 
 def adminprofile(request):
     return render(request, 'users/adminprofile.html')
+
 def childview(request):
-    return render(request, 'users/childview.html')
+    from .models import Child
+    item = Child.objects.all()
+    if 'q' in request.GET:
+        q = request.GET['q']
+        # data = Data.objects.filter(last_name__icontains=q)
+        multiple_q = Q(Q(child_registration_no__icontains=q) | Q(phone_no__icontains=q))
+        item = Child.objects.filter(multiple_q)
+    else:
+        item = Child.objects.all()
+    context = {
+        'item': item
+    }
+    return render(request, 'users/childview.html', context)
+
 def decorator(request):
     return render(request, 'users/decorator.html')
 
 def vaccine_delete(request, pk):
-    from .models import vaccine
-    item = vaccine.objects.get(id = pk)
+    from .models import Vaccine
+    item = Vaccine.objects.get(id = pk)
     if request.method == 'POST':
         item.delete()
         return redirect('vaccine')

@@ -8,6 +8,15 @@
     <div class="container">
         <div class="row my-4">
             <div class="col-md-4">
+                {% if messages %}
+            {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+
+
                 <div class="border bg-danger p-3">
                     <h4>Add Vaccines</h4>
                     <hr>
@@ -39,6 +48,7 @@
                              <td>{{ item.mode_of_admission }}</td>
                             <td>{{ item.vaccine_type }}</td>
                             <td>{{ item.vaccine_quantity }}</td>
+                            
 
                             <td>
                                 <a class="btn btn-info btn-sm" href="{% url 'vaccine_edit' item.id %}">Edit</a>
